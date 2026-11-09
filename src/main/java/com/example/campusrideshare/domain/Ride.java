@@ -113,9 +113,8 @@ public class Ride {
     public String toString() {
         return "Ride{" +
                 "id=" + id +
-                ", driver=" + driver +
+                ", username=" + driver.getUsername() +
                 ", riderLimit=" + riderLimit +
-                ", passengers=" + passengers +
                 ", destination='" + destination + '\'' +
                 ", departure='" + departure + '\'' +
                 ", departureDate=" + departureDate +
