@@ -113,7 +113,7 @@ public class Ride {
     public String toString() {
         return "Ride{" +
                 "id=" + id +
-                ", username=" + driver.getUsername() +
+                ", driver=" + (driver != null ? driver.getFullName() : "none") +
                 ", riderLimit=" + riderLimit +
                 ", destination='" + destination + '\'' +
                 ", departure='" + departure + '\'' +

@@ -3,7 +3,6 @@ package com.example.campusrideshare.domain;
 import jakarta.persistence.*;
 import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
-import org.springframework.context.annotation.Role;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -29,9 +28,7 @@ public class User implements UserDetails {
     @Column(nullable=false)
     private String password;
     @Column(nullable=false)
-    private String firstName;
-    @Column(nullable=false)
-    private String lastName;
+    private String fullName;
     @Column(nullable=false)
     private String email;
     @Column(nullable=false)
@@ -41,11 +38,10 @@ public class User implements UserDetails {
 
     public User() {}
 
-    public User(String username, String password, String firstName, String lastName, String email, String department, String role) {
+    public User(String username, String password, String fullName, String email, String department, String role) {
         this.username = username;
         this.password = password;
-        this.firstName = firstName;
-        this.lastName = lastName;
+        this.fullName = fullName;
         this.email = email;
         this.department = department;
         this.role = role;
@@ -80,21 +76,14 @@ public class User implements UserDetails {
         this.password = password;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getFullName() {
+        return fullName;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
 
     public String getEmail() {
         return email;
@@ -135,10 +124,7 @@ public class User implements UserDetails {
     @Override
     public String toString() {
         return "User{" +
-                "username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
+                ", Name='" + fullName + '\'' +
                 ", email='" + email + '\'' +
                 ", department='" + department + '\'' +
                 ", role='" + role + '\'' +
