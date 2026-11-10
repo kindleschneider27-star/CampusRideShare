@@ -31,7 +31,7 @@ public class UserService {
         }
     }
 
-    @Transactional
+   /* @Transactional
     public boolean registerNewUser(UserRegistrationForm form) {
         // check unique username
         String username = form.getUsername().trim();
@@ -49,5 +49,5 @@ public class UserService {
         userRepo.save(newUser);
 
         return true; // success!!
-    }
+    }*/
 }
