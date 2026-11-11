@@ -32,13 +32,13 @@ public class User implements UserDetails {
     @Column(nullable=false)
     private String email;
     @Column(nullable=false)
-    private String department;
+    private Department department;
     @Column(nullable=false)
     private String role;
 
     public User() {}
 
-    public User(String username, String password, String fullName, String email, String department, String role) {
+    public User(String username, String password, String fullName, String email, Department department, String role) {
         this.username = username;
         this.password = password;
         this.fullName = fullName;
@@ -93,11 +93,11 @@ public class User implements UserDetails {
         this.email = email;
     }
 
-    public String getDepartment() {
+    public Department getDepartment() {
         return department;
     }
 
-    public void setDepartment(String department) {
+    public void setDepartment(Department department) {
         this.department = department;
     }
 

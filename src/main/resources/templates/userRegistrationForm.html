@@ -28,7 +28,12 @@
         <span class="validationError"
               th:if="${#fields.hasErrors('email')}"
               th:errors="*{email}">EMAIL ERROR</span><br>
-        Department: <input type="text" th:field="*{department}"/>
+        Department:
+        <select id="department" th:field="*{department}">
+        <option value="">-- Select --</option>
+        <option th:each="d : ${T(com.example.campusrideshare.domain.Department).values()}"
+                th:value="${d}" th:text="${d.label}"></option>
+        </select>
         <span class="validationError"
               th:if="${#fields.hasErrors('department')}"
               th:errors="*{department}">DEPARTMENT ERROR</span><br>

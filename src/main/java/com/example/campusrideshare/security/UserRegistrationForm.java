@@ -1,7 +1,9 @@
 package com.example.campusrideshare.security;
 
+import com.example.campusrideshare.domain.Department;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 public class UserRegistrationForm {
@@ -18,8 +20,8 @@ public class UserRegistrationForm {
     @NotBlank(message="Your email is required.")
     @Email(message="Enter a valid email address.")
     private String email;
-    @NotBlank(message = "Department required, if you dont have one select Undecided.")
-    private String department;
+    @NotNull(message = "Department required, if you dont have one select Undecided.")
+    private Department department;
 
     public UserRegistrationForm() {
     }
@@ -64,11 +66,11 @@ public class UserRegistrationForm {
         this.email = email;
     }
 
-    public String getDepartment() {
+    public Department getDepartment() {
         return department;
     }
 
-    public void setDepartment(String department) {
+    public void setDepartment(Department department) {
         this.department = department;
     }
 }
