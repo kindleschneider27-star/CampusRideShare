@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head}"></head>
+<body id="pageCenter">
+<div th:replace="~{fragments :: header-nav}" ></div>
+<main>
+    <h2>Welcome, Campus Ride Share</h2>
+    <img class="imageRight" th:src="@{/images/student-car.jpg}" width="350" height="250" alt="girl in car.">
+    <p>Welcome to the campus ride system for students. Login and you can create a ride or book a slot
+        in a ride from someone else. Make friends and save the plant while your at it!</p>
+</main>
+<footer th:replace="~{fragments :: footer}"></footer>
+</body>
+</html>

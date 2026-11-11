@@ -1,1 +1,5 @@
-spring.application.name=CampusRideShare
+spring:
+  application:
+    name: CampusRideShare
+  profiles:
+    active: dev

@@ -2,6 +2,7 @@ package com.example.campusrideshare.services;
 
 import com.example.campusrideshare.data.UserRepository;
 import com.example.campusrideshare.domain.User;
+import com.example.campusrideshare.security.UserRegistrationForm;
 import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,7 +32,7 @@ public class UserService {
         }
     }
 
-   /* @Transactional
+   @Transactional
     public boolean registerNewUser(UserRegistrationForm form) {
         // check unique username
         String username = form.getUsername().trim();
@@ -49,5 +50,5 @@ public class UserService {
         userRepo.save(newUser);
 
         return true; // success!!
-    }*/
+    }
 }
