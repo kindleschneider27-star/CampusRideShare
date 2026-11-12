@@ -32,7 +32,7 @@
         <select id="department" th:field="*{department}">
         <option value="">-- Select --</option>
         <option th:each="d : ${T(com.example.campusrideshare.domain.Department).values()}"
-                th:value="${d}" th:text="${d.label}"></option>
+                th:value="${d}" th:text="${d}"></option>
         </select>
         <span class="validationError"
               th:if="${#fields.hasErrors('department')}"

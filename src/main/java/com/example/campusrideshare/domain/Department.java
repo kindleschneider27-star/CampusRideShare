@@ -12,8 +12,9 @@ public enum Department {
             case 3 -> "Mathematics";
             case 4 -> "Business";
             case 5 -> "Education";
-            case 6 -> "Social Sciences";
-            case 7 -> "Other";
+            case 6 -> "Arts";
+            case 7 -> "Social Sciences";
+            case 8 -> "Other";
             default -> "Undecided";
         };
     }

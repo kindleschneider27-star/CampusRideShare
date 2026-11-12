@@ -1,5 +1,6 @@
 package com.example.campusrideshare;
 
+import com.example.campusrideshare.domain.Department;
 import com.example.campusrideshare.domain.User;
 import com.example.campusrideshare.services.UserService;
 import org.springframework.boot.CommandLineRunner;
@@ -23,9 +24,9 @@ public class CampusRideShareApplication {
     public CommandLineRunner dataLoader(UserService userService, PasswordEncoder passwordEncoder) {
         return args -> {
             userService.createUserIfMissing(new User("student", passwordEncoder.encode("student123"),
-                    "Lilly Lane", "llane@mccneb.edu","IT","ROLE_STUDENT"));
+                    "Lilly Lane", "llane@mccneb.edu", Department.IT,"ROLE_STUDENT"));
             userService.createUserIfMissing((new User("admin", passwordEncoder.encode("admin123"),
-                    "Kindle Schneider", "kschneider@mccneb.edu", "ENG", "ROLE_ADMIN")));
+                    "Kindle Schneider", "kschneider@mccneb.edu", Department.ENG, "ROLE_ADMIN")));
         };
     }
 }
