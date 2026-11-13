@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head}"></head>
+<body id="pageCenter">
+<div th:replace="~{fragments :: header-nav}" ></div>
+<main>
+    <h2>Register a new Ride</h2>
+    <form method="POST" th:object="${ride}" th:action="@{/register}" >
+        Driver: <span th:text="${#authentication.name}">YOU</span> <br>
+
+        Rider Limit: <input type="number" min="1" max="6" th:field="*{riderLimit}"/>
+        <span class="validationError"
+        th:if="${#fields.hasErrors('rideLimit')}"
+        th:errors="*{riderLimit}">RIDER_LIMIT ERROR</span><br>
+
+        Destination: <input type="text" th:field="*{destination}"/>
+        <span class="validationError"
+        th:if="${#fields.hasErrors('destination')}"
+        th:errors="*{destination}">DESTINATION ERROR</span><br>
+
+        Departure Location: <input type="text" th:field="*{departure}"/>
+        <span class="validationError"
+        th:if="${#fields.hasErrors('departure')}"
+        th:errors="*{departure}">DEPARTURE ERROR</span><br>
+
+        Departure Date: <input type="datetime-local" th:field="*{departureDate}"/>
+        <span class="validationError"
+        th:if="${#fields.hasErrors('departureDate')}"
+        th:errors="*{departureDate}">DEPARTURE ERROR</span><br>
+        <button type="submit">Register Ride</button>
+
+    </form>
+</main>
+<footer th:replace="~{fragments :: footer}"></footer>
+</body>
+</html>
