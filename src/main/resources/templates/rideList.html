@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head}"></head>
+<body id="pageCenter">
+<div th:replace="~{fragments :: header-nav}" ></div>
+<main>
+    <div class="errorMessage" role="alert" th:if="${errorMessage}" th:text="${errorMessage}">
+        Error Message
+    </div>
+    <div class="successMessage" role="status" th:if="${successMessage}" th:text="${successMessage}">
+        Success Message
+    </div>
+
+    <div>
+        <h3>Search or Filter Rides</h3>
+        <form method="GET" th:action="@{/list}">
+            Department: <select name="filterType">
+            <option value=""></option>
+            <option th:each="t : ${Departments}"
+                    th:value="${t}"
+                    th:text="${t}"
+                    th:selected="${t == filterType}"
+            >TYPE HERE</option>
+        </select>
+            <input type="submit" value="Search/Filter">
+            <a th:href="@{/list}">Clear Search/Filter</a>
+        </form>
+
+    </div>
+    <h2>Rides List</h2>
+    <div th:if="${rideDB.empty}">
+        <p>No pets in the system.</p>
+    </div>
+    <div th:unless="${rideDB.empty}">
+        <section th:each="current : ${rideDB.content}">
+            <h3><a th:href="@{/rides/view/{id}(id=${ride.id})}" th:text="${current.destination}">Destination</a></h3>
+            <p th:text="${current.departure}">from</p>
+            <p th:text="${#temporals.format(ride.departureDate, 'MMM d, h:mm a')}">date</p>
+            <p th:text="${current.status}">OPEN</p>
+        </section>
+    </div>
+
+
+</main>
+<footer th:replace="~{fragments :: footer}"></footer>
+</body>
+</html>
