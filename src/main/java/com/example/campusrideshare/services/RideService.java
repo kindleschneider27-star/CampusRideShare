@@ -76,7 +76,7 @@ public class RideService {
         ride.setStatus(saved.getStatus());
 
         rideRepo.save(ride);
-        logger.info("Ride updated to {}: {}", id, saved);
+        logger.info("Ride updated to {}: {}", id, ride);
         return true;
     }
 }

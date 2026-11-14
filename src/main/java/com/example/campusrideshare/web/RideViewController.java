@@ -84,7 +84,7 @@ public class RideViewController {
 
         if (errors.hasErrors()) {
 
-            model.addAttribute("ride", ride.get());
+            model.addAttribute("ride", ride);
             model.addAttribute("departments", Department.values());
 
             return "rideModifyForm";

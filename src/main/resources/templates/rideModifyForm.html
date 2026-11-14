@@ -7,7 +7,7 @@
 <div th:replace="~{fragments :: header-nav}" ></div>
 <main>
     <h2>Modify the Ride</h2>
-    <form method="POST" th:object="${ride}" th:action="@{'/'+${ride.id}+'/edit'}" >
+    <form method="POST" th:object="${ride}" th:action="@{/rides/view/{id}/edit(id=${ride.id})}" >
         Rider Limit: <input type="number" min="1" max="6" th:field="*{riderLimit}"/>
         <span class="validationError"
               th:if="${#fields.hasErrors('riderLimit')}"
