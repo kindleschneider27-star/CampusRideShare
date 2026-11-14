@@ -5,9 +5,10 @@ import com.example.campusrideshare.domain.Department;
 import com.example.campusrideshare.domain.Ride;
 import com.example.campusrideshare.domain.User;
 import com.example.campusrideshare.services.RideService;
-import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -27,6 +27,10 @@
         onsubmit="return confirm('Delete this ride? This cannot be undone.');">
         <button type="submit">Delete Ride</button>
     </form>
+    <form th:if="${canEdit}" method="post"
+          th:action="@{/rides/view/{id}/edit(id=${current.id})}">
+        <button type="submit">Edit Ride</button>
+    </form>
     <a th:href="@{/rides/list}">Back to Rides</a>
 
 </main>

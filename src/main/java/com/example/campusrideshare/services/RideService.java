@@ -6,6 +6,7 @@ import com.example.campusrideshare.domain.Department;
 import com.example.campusrideshare.domain.Ride;
 import com.example.campusrideshare.domain.RideStatus;
 import com.example.campusrideshare.domain.User;
+import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -57,6 +58,25 @@ public class RideService {
         Optional<Ride> ride = rideRepo.findById(id);
         if (ride.isEmpty()) { return false; }
         rideRepo.delete(ride.get());
+        return true;
+    }
+
+    @Transactional
+    @PreAuthorize("hasRole('ADMIN') or @rideAuthorization.isOwner(#id, authentication.name)")
+    public boolean updateRide (UUID id, Ride ride) {
+        Optional<Ride> rideOpt = rideRepo.findById(id);
+        if (rideOpt.isEmpty()) {
+            logger.info("Error saving ride with ID: {} doesnt exist", id);
+            return false;
+        }
+        Ride saved = rideOpt.get();
+
+        ride.setId(id);
+        ride.setDriver(saved.getDriver());
+        ride.setStatus(saved.getStatus());
+
+        rideRepo.save(ride);
+        logger.info("Ride updated to {}: {}", id, saved);
         return true;
     }
 }
