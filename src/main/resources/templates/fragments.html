@@ -15,9 +15,9 @@
     <header><h1>Campus Rides</h1></header>
     <nav>
         <a th:href="@{/}">Home</a>
-        <a sec:authorize="isAuthenticated()" th:href="@{/list}">All Rides </a>
+        <a sec:authorize="isAuthenticated()" th:href="@{/rides/list}">All Rides </a>
         <a sec:authorize="isAuthenticated()" th:href="@{/register}">Register a Ride</a>
-        <a th:href="@{/user/register}">Sign Up</a>
+        <a sec:authorize="isAnonymous()" th:href="@{/user/register}">Sign Up</a>
         <a sec:authorize="isAnonymous()" th:href="@{/login}">Login</a>
         <form sec:authorize="isAuthenticated()" method="POST" th:action="@{/logout}">
             <input type="submit" value="Logout">

@@ -18,7 +18,7 @@
         <form method="GET" th:action="@{/list}">
             Department: <select name="filterType">
             <option value=""></option>
-            <option th:each="t : ${Departments}"
+            <option th:each="t : ${departments}"
                     th:value="${t}"
                     th:text="${t}"
                     th:selected="${t == filterType}"
@@ -30,12 +30,11 @@
 
     </div>
     <h2>Rides List</h2>
-    <div th:if="${rideDB.empty}">
-        <p>No pets in the system.</p>
-    </div>
-    <div th:unless="${rideDB.empty}">
-        <section th:each="current : ${rideDB.content}">
-            <h3><a th:href="@{/rides/view/{id}(id=${ride.id})}" th:text="${current.destination}">Destination</a></h3>
+    <div th:if="${#lists.isEmpty(rides)}"><p>No rides posted yet.</p></div>
+
+    <div th:unless="${#lists.isEmpty(rides)}">
+        <section th:each="current : ${rides}">
+            <h3><a th:href="@{/rides/view/{id}(id=${current.id})}" th:text="${current.destination}">Destination</a></h3>
             <p th:text="${current.departure}">from</p>
             <p th:text="${#temporals.format(ride.departureDate, 'MMM d, h:mm a')}">date</p>
             <p th:text="${current.status}">OPEN</p>

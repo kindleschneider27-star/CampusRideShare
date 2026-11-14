@@ -15,36 +15,13 @@
     </div>
     <h2 th:text="${current.driver.fullName}">DRIVER</h2>
     <p>Rider Limit: <span th:text="${current.riderLimit}">RIDER_LIMIT</span></p>
-    <p>Current Passengers: <span th:text="${current.passengers}">PASSENGERS</span></p>
+    <p>Current Passengers: <span th:text="${#list.size(current.passengers)}">PASSENGERS</span></p>
     <p>Destination: <span th:text="${current.destination}">DESTINATION</span></p>
     <p>Departure: <span th:text="${current.departure}">DEPARTURE</span></p>
     <p>Date/Time: <span th:text="${#temporals.format(current.departureDate, 'MMM d, yyy h:mm a')}">DEPARTURE_DATE</span></p>
     <p>Status: <span th:text="${current.status}">STATUS</span> </p>
     <a th:href="@{/rides/list}">Back to Rides</a>
 
-<!--    <div sec:authorize="isAuthenticated()">-->
-<!--        <h3>Owner Information</h3>-->
-<!--        <p>Owner Name: <span th:text="${current.owner.fullname}">Owner Name</span></p>-->
-<!--        <p>Owner Contact: <span th:text="${current.owner.contact}">Owner Contact</span></p>-->
-<!--        <p>Owner Location: <span th:text="${current.owner.city} + ', ' + ${current.owner.state}">Owner Location</span></p>-->
-
-
-<!--        <div sec:authorize="hasRole('ADMIN') or authentication.name == #vars.current.owner.username">-->
-<!--            <form th:unless="${currentlyLost}" method="POST" th:action="@{'/view/current/'+${current.id}+'/lost'}">-->
-<!--                <input type="submit" value="Pet is Lost">-->
-<!--            </form>-->
-<!--            <form th:if="${currentlyLost}" method="POST" th:action="@{'/view/current/'+${current.id}+'/found'}">-->
-<!--                <input type="submit" value="Pet was Found">-->
-<!--            </form>-->
-
-<!--            <form method="GET" th:action="@{'/view/current/'+${current.id}+'/edit'}">-->
-<!--                <input type="submit" value="Modify Animal">-->
-<!--            </form>-->
-<!--            <form method="POST" th:action="@{'/view/current/'+${current.id}+'/delete'}">-->
-<!--                <input type="submit" value="Delete Animal">-->
-            </form>
-        </div>
-    </div>
 </main>
 <footer th:replace="~{fragments :: footer}"></footer>
 </body>

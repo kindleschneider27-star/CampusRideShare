@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/list")
+@RequestMapping("rides/list")
 public class RideListController {
     private static final Logger logger = LoggerFactory.getLogger(RideListController.class);
     private final RideService rideService;
@@ -21,7 +21,7 @@ public class RideListController {
     }
 
     @ModelAttribute("pageTitle")
-    public String addPageTitle() {
+    public String PageTitle() {
         return "Ride List";
     }
 
@@ -29,7 +29,7 @@ public class RideListController {
     public String listRides(Model model) {
         model.addAttribute("rides", rideService.getAllRides());
         model.addAttribute("departments", Department.values());
-        return "list";
+        return "rideList";
     }
 
 }
