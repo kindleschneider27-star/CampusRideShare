@@ -32,7 +32,7 @@ public class RideViewController {
         Optional<Ride> ride = rideService.getRideById(id);
         if(ride.isEmpty()){
             logger.debug("Ride: {} not found", id);
-            return "redirect:/list";
+            return "redirect:/rides/list";
         }
 
         Ride current = ride.get();
@@ -43,11 +43,11 @@ public class RideViewController {
     }
 
     //@PreAuthorize("hasRole('ADMIN') or @rideAuthorization.isOwner(#id, authentication.name)")
-    //@PostMapping("/current/{id}/delete")
+
     //do i need the edit page?
 
     @PreAuthorize("hasRole('ADMIN') or @rideAuthorization.isOwner(#id, authentication.name)")
-    @PostMapping("/current/{id}/delete")
+    @PostMapping("/{id}/delete")
     public String deleteRide(@PathVariable UUID id, RedirectAttributes redirectAttributes) {
         if (rideService.deleteRideById(id)) {
             redirectAttributes.addFlashAttribute("successMessage", "ride deleted successfully");
@@ -55,7 +55,7 @@ public class RideViewController {
             redirectAttributes.addFlashAttribute("errorMessage", "ride not deleted");
         }
 
-        return "redirect:/list";
+        return "redirect:/rides/list";
     }
 
 
