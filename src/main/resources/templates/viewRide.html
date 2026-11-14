@@ -22,15 +22,14 @@
     <p>Department: <span th:text="${current.driver.department}">Department</span> </p>
     <p>Status: <span th:text="${current.status}">STATUS</span> </p>
 
-    <form th:if="${canDelete}"
-        th:href="@{/rides/view/{id}/delete(id=${current.id})}"
-        onsubmit="return confirm('Delete this ride? This cannot be undone.');">
-        <button type="submit">Delete Ride</button>
+    <form th:if="${canDelete}" method="post"
+          th:action="@{/rides/view/{id}/delete(id=${current.id})}"
+          onsubmit="return confirm('Delete this ride? This cannot be undone.');">
+        <button type="submit">Delete Ride</button><br>
     </form>
-    <form th:if="${canDelete}"
-          th:href="@{/rides/view/{id}/edit(id=${current.id})}">
-        <button type="submit">Edit Ride</button>
-    </form>
+    <a th:if="${canDelete}" th:href="@{/rides/view/{id}/edit(id=${current.id})}">
+        <button type="button">Edit Ride</button> <br>
+    </a>
     <a th:href="@{/rides/list}">Back to Rides</a>
 
 </main>

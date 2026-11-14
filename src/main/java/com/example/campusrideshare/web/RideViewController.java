@@ -8,6 +8,7 @@ import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -31,26 +32,29 @@ public class RideViewController {
     }
 
     @GetMapping("/{id}")
-    public String viewRide(@PathVariable UUID id, Model model){
+
+    public String viewRide(@PathVariable UUID id, Model model, Authentication auth) {
         Optional<Ride> ride = rideService.getRideById(id);
         if(ride.isEmpty()){
             logger.debug("Ride: {} not found", id);
             return "redirect:/rides/list";
         }
-
         Ride current = ride.get();
+
+        boolean canModify = auth != null
+                && (auth.getName().equals(current.getDriver().getUsername())
+                || auth.getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN")));
+        model.addAttribute("canDelete", canModify);
 
         model.addAttribute("current", current);
         model.addAttribute("Ride to", current.getDestination());
         return "viewRide";
     }
 
-    //@PreAuthorize("hasRole('ADMIN') or @rideAuthorization.isOwner(#id, authentication.name)")
 
-    //do i need the edit page?
-
-    @PreAuthorize("hasRole('ADMIN') or @rideAuthorization.isOwner(#id, authentication.name)")
     @PostMapping("/{id}/delete")
+    @PreAuthorize("hasRole('ADMIN') or @rideAuthorization.isOwner(#id, authentication.name)")
     public String deleteRide(@PathVariable UUID id, RedirectAttributes redirectAttributes) {
         if (rideService.deleteRideById(id)) {
             redirectAttributes.addFlashAttribute("successMessage", "ride deleted successfully");
@@ -98,7 +102,7 @@ public class RideViewController {
         else {
             redirectAttributes.addFlashAttribute("errorMessage", "ride not updated");
         }
-        return "redirect:/rides/view" + id;
+        return "redirect:/rides/view/" + id;
     }
 
 }
