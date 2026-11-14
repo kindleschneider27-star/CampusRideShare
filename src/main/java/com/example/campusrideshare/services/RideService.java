@@ -40,7 +40,7 @@ public class RideService {
         return rideRepo.findByDriver_Department(dept);
     }
     
-    @PreAuthorize("hasRole('ADMIN') or @rideAuthorization.isOwner(#id, authentication.name)")
+
     public Ride saveRideForUser(Ride ride, String username) {
         User driver = userRepo.findByUsername(username)
                 .orElseThrow(()-> new UsernameNotFoundException("Username not found"));
@@ -52,7 +52,7 @@ public class RideService {
         return saved;
     }
 
-
+    @PreAuthorize("hasRole('ADMIN') or @rideAuthorization.isOwner(#id, authentication.name)")
     public boolean deleteRideById(UUID id) {
         Optional<Ride> ride = rideRepo.findById(id);
         if (ride.isEmpty()) { return false; }

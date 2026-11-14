@@ -50,9 +50,9 @@ public class RideViewController {
     @PostMapping("/current/{id}/delete")
     public String deleteRide(@PathVariable UUID id, RedirectAttributes redirectAttributes) {
         if (rideService.deleteRideById(id)) {
-            redirectAttributes.addFlashAttribute("message", "ride deleted successfully");
+            redirectAttributes.addFlashAttribute("successMessage", "ride deleted successfully");
         } else {
-            redirectAttributes.addFlashAttribute("message", "ride not deleted");
+            redirectAttributes.addFlashAttribute("errorMessage", "ride not deleted");
         }
 
         return "redirect:/list";

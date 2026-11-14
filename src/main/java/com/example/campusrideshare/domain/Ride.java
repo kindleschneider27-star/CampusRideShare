@@ -19,7 +19,6 @@ public class Ride {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
     @ManyToOne
-    @NotNull(message ="A driver is required")
     private User driver;
     @Min(1) @Max(6)
     private int riderLimit;

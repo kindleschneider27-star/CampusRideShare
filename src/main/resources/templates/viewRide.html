@@ -15,10 +15,11 @@
     </div>
     <h2 th:text="${current.driver.fullName}">DRIVER</h2>
     <p>Rider Limit: <span th:text="${current.riderLimit}">RIDER_LIMIT</span></p>
-    <p>Current Passengers: <span th:text="${#list.size(current.passengers)}">PASSENGERS</span></p>
+    <p>Current Passengers: <span th:text="${#lists.size(current.passengers)}">PASSENGERS</span></p>
     <p>Destination: <span th:text="${current.destination}">DESTINATION</span></p>
     <p>Departure: <span th:text="${current.departure}">DEPARTURE</span></p>
     <p>Date/Time: <span th:text="${#temporals.format(current.departureDate, 'MMM d, yyy h:mm a')}">DEPARTURE_DATE</span></p>
+    <p>Department: <span th:text="${current.driver.department}">Department</span> </p>
     <p>Status: <span th:text="${current.status}">STATUS</span> </p>
     <a th:href="@{/rides/list}">Back to Rides</a>
 

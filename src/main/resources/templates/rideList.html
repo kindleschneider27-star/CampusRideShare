@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="en"
       xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="~{fragments :: head}"></head>
 <body id="pageCenter">
-<div th:replace="~{fragments :: header-nav}" ></div>
+<div th:replace="~{fragments :: header-nav}"></div>
 <main>
     <div class="errorMessage" role="alert" th:if="${errorMessage}" th:text="${errorMessage}">
         Error Message
@@ -15,20 +16,25 @@
 
     <div>
         <h3>Search or Filter Rides</h3>
-        <form method="GET" th:action="@{/list}">
-            Department: <select name="filterType">
-            <option value=""></option>
-            <option th:each="t : ${departments}"
-                    th:value="${t}"
-                    th:text="${t}"
-                    th:selected="${t == filterType}"
-            >TYPE HERE</option>
-        </select>
+        <form method="get" th:action="@{/rides/list}">
+            <label for="filterType">Department</label>
+            <select id="filterType" name="filterType">
+                <option value="">All departments</option>
+                <option th:each="t : ${departments}"
+                        th:value="${t.name()}"
+                        th:text="${t}"
+                        th:selected="${t == filterType}"></option>
+            </select>
             <input type="submit" value="Search/Filter">
-            <a th:href="@{/list}">Clear Search/Filter</a>
+            <a th:href="@{/rides/list}">Clear Search/Filter</a>
         </form>
+        <p>
+            <a th:if="${currentUser != null and currentUser.department != null}"
+               th:href="@{/rides/list(filterType=${currentUser.department.name()})}">Rides in my department</a>
 
+        </p>
     </div>
+
     <h2>Rides List</h2>
     <div th:if="${#lists.isEmpty(rides)}"><p>No rides posted yet.</p></div>
 
@@ -36,12 +42,11 @@
         <section th:each="current : ${rides}">
             <h3><a th:href="@{/rides/view/{id}(id=${current.id})}" th:text="${current.destination}">Destination</a></h3>
             <p th:text="${current.departure}">from</p>
-            <p th:text="${#temporals.format(ride.departureDate, 'MMM d, h:mm a')}">date</p>
+            <p th:text="${#temporals.format(current.departureDate, 'MMM d, h:mm a')}">date</p>
+            <p th:text="${current.driver.department}">department</p>
             <p th:text="${current.status}">OPEN</p>
         </section>
     </div>
-
-
 </main>
 <footer th:replace="~{fragments :: footer}"></footer>
 </body>

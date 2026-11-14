@@ -51,7 +51,7 @@ public class RegisterRideController {
         }
 
         Ride addRide = rideService.saveRideForUser(ride, user.getUsername());
-        redirectAttributes.addFlashAttribute("message", "Ride registered successfully");
+        redirectAttributes.addFlashAttribute("successMessage", "Ride registered successfully");
         return "redirect:/rides/view/" + addRide.getId();
     }
 }
