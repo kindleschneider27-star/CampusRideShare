@@ -67,10 +67,14 @@ public class SecurityConfig {
         return http
                 .authorizeHttpRequests((authorize) -> authorize
                         .requestMatchers("/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**").permitAll()
+                        .requestMatchers("/h2-console/**").permitAll()
                         .requestMatchers("/", "/error", "/css/**", "/images/**").permitAll() // static resources
                         .requestMatchers("/login", "/user/register", "/user/register").permitAll()
 
                         .anyRequest().authenticated())
+                .headers(headers -> headers
+                        .frameOptions(frame -> frame.sameOrigin()))
+
                 .formLogin(form -> form
                         .loginPage("/login")
                         .defaultSuccessUrl("/")
