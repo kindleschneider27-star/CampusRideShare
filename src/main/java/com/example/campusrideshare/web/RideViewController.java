@@ -79,8 +79,9 @@ public class RideViewController {
     }
 
     @PostMapping("/{id}/edit")
+    @PreAuthorize("hasRole('ADMIN') or @rideAuthorization.isOwner(#id, authentication.name)")
     public String modifyRide(@PathVariable UUID id, @Valid Ride ride, Errors errors, Model model,RedirectAttributes redirectAttributes) {
-        logger.debug("Ride recieved: {}", ride);
+        logger.debug("Ride received: {}", ride);
 
         if (errors.hasErrors()) {
 
@@ -97,7 +98,7 @@ public class RideViewController {
         else {
             redirectAttributes.addFlashAttribute("errorMessage", "ride not updated");
         }
-        return "redirect:/rides/view";
+        return "redirect:/rides/view" + id;
     }
 
 }
