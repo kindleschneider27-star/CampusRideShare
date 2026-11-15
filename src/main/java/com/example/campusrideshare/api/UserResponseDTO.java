@@ -11,6 +11,8 @@ public class UserResponseDTO {
         private String fullName;
 
         public static UserResponseDTO from(User user) {
+            if(user == null) return null;
+
             UserResponseDTO response =
                     new UserResponseDTO();
 
@@ -46,4 +48,3 @@ public class UserResponseDTO {
         }
     }
 
-}

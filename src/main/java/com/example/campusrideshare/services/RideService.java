@@ -79,4 +79,15 @@ public class RideService {
         logger.info("Ride updated to {}: {}", id, ride);
         return true;
     }
+
+    @Transactional
+    public Ride registerNewRide(Ride ride, String username) {
+        Optional<User> driver = userRepo.findByUsername(username);
+        if (driver.isEmpty()) {
+            return null;
+        }
+        ride.setDriver(driver.get());
+        ride.setStatus(RideStatus.OPEN);
+        return rideRepo.save(ride);
+    }
 }

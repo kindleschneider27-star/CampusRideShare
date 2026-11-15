@@ -3,16 +3,13 @@ package com.example.campusrideshare.api;
 import com.example.campusrideshare.domain.Ride;
 import com.example.campusrideshare.services.RideService;
 import jakarta.validation.Valid;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -28,69 +25,43 @@ public class RideRestController {
     }
 
     @GetMapping("/search")
-    public Page<RideResponseDTO> searchRides(@RequestParam(defaultValue = "")String name,
-                                                 @RequestParam(required = false)AnimalType type,
-                                                 @RequestParam(defaultValue = "")String subtype) {
-
-
-
-        return rideService.searchRides(name, type, subtype).map(RideResponseDTO::from);
+    public List<RideResponseDTO> getRides() {
+        return rideService.getAllRides().stream()
+                .map(RideResponseDTO::from)
+                .toList();
     }
 
     @GetMapping("/{id}")
-    @SecurityRequirement(name="bearerAuth")
     public ResponseEntity<RideResponseDTO> getRide(@PathVariable UUID id,
-                                                       @AuthenticationPrincipal Jwt jwt) {
+                                                   @AuthenticationPrincipal Jwt jwt) {
         Optional<Ride> ride = rideService.getRideById(id);
 
         if (ride.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
 
-        boolean includeOwner = jwt != null;
+        boolean includeDriver = jwt != null;
 
-        RideResponseDTO response = RideResponseDTO.from(ride.get(), includeOwner);
-
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(RideResponseDTO.from(ride.get(), includeDriver));
     }
 
-    @PostMapping(consumes="application/json")
-    @SecurityRequirement(name="bearerAuth")
-    public ResponseEntity<RideResponseDTO> createAnimal(@Valid @RequestBody RideCreateRequestDTO request,
-                                                          @AuthenticationPrincipal Jwt jwt) {
-
+    @PostMapping(consumes = "application/json")
+    public ResponseEntity<RideResponseDTO> createRide(@Valid @RequestBody RideCreateRequestDTO request,
+                                                      @AuthenticationPrincipal Jwt jwt) {
         Ride ride = RideRequestMapper.fromCreate(request);
 
         String username = jwt.getSubject();
 
+        Ride saved = rideService.registerNewRide(ride, username);
 
-        Ride savedRide = rideService.registerNewRide(ride, username);
-
-
-        RideResponseDTO response = RideResponseDTO.from(savedRide, true);
-
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
-    }
-
-    @PatchMapping(path="/{id}", consumes = "application/json")
-    @SecurityRequirement(name="bearerAuth")
-    public ResponseEntity<RideResponseDTO> patchRide(@PathVariable UUID id,
-                                                         @RequestBody RidePatchRequestDTO request) {
-
-        Optional<Ride> updatedRide = rideService.patchUpdate(id, request);
-
-        if (updatedRide.isEmpty()) {
-            return ResponseEntity.notFound().build();
+        if (saved == null) {
+            return ResponseEntity.badRequest().build();
         }
 
-        RideResponseDTO response = RideResponseDTO.from(updatedRide.get(), true);
-
-        return ResponseEntity.ok(response);
+        return ResponseEntity.status(HttpStatus.CREATED).body(RideResponseDTO.from(saved, true));
     }
 
     @DeleteMapping("/{id}")
-    @SecurityRequirement(name="bearerAuth")
     public ResponseEntity<Void> deleteRide(@PathVariable UUID id) {
         boolean deleted = rideService.deleteRideById(id);
 
@@ -100,6 +71,7 @@ public class RideRestController {
 
         return ResponseEntity.noContent().build();
     }
+
 
 
 }
