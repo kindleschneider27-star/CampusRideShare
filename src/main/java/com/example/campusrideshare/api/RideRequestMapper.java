@@ -4,9 +4,7 @@ import com.example.campusrideshare.domain.Ride;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
-import java.util.Base64;
 
-import static org.springframework.security.web.savedrequest.FastHttpDateFormat.parseDate;
 
 public class RideRequestMapper {
 

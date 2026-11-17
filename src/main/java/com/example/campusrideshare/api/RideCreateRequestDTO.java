@@ -20,7 +20,7 @@ public class RideCreateRequestDTO {
     @NotBlank(message="A departure location is required")
     private String departure;
 
-    @NotNull(message="A departure date and time is required")
+    @NotBlank(message="A departure date and time is required")
     private String departureDate;
 
 

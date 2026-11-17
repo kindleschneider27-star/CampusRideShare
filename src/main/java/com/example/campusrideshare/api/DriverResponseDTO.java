@@ -1,6 +1,6 @@
 package com.example.campusrideshare.api;
 
-import com.example.campusrideshare.domain.Department;
+
 import com.example.campusrideshare.domain.User;
 
 import java.util.UUID;
@@ -22,7 +22,7 @@ public class DriverResponseDTO {
         response.setId(user.getId());
         response.setUsername(user.getUsername());
         response.setFullName(user.getFullName());
-        response.setDepartment(user.getDepartment());
+        response.setDepartment(user.getDepartment() == null ? null : user.getDepartment().name());
 
 
         return response;
