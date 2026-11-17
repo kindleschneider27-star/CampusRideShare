@@ -4,7 +4,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import java.time.Duration;
 
-@ConfigurationProperties(prefix = "campus_ride.security.jwt")
+@ConfigurationProperties(prefix = "campus-ride.security.jwt")
 public class JwtProperties {
 
         private String secret;

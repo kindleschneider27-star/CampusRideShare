@@ -16,7 +16,6 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtAut
 import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 import org.springframework.security.web.SecurityFilterChain;
 
-
 @Configuration
 @EnableMethodSecurity
 public class SecurityConfig {
@@ -24,7 +23,6 @@ public class SecurityConfig {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
 
     @Bean
     public AuthenticationManager authenticationManager(
@@ -45,46 +43,42 @@ public class SecurityConfig {
         return authenticationConverter;
     }
 
-
-     @Bean
-     @Order(1)
-     public SecurityFilterChain apiSecurityFilterChain(HttpSecurity http, JwtAuthenticationConverter jwtConverter) throws Exception {
-     return http
-     .securityMatcher("/api/**")
-     .cors(Customizer.withDefaults())
-     .csrf(csrf -> csrf.disable())
-     .sessionManagement(session ->
-     session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-     .authorizeHttpRequests(authorize -> authorize
-     .requestMatchers(HttpMethod.POST, "/api/auth/login", "/api/auth/logout",
-     "/api/auth/register").permitAll()
-     .requestMatchers(HttpMethod.GET, "/api/animals/**").permitAll()
-     .anyRequest().authenticated())
-     .oauth2ResourceServer(server -> server
-     .jwt(jwt -> jwt.jwtAuthenticationConverter(jwtConverter)))
-     .build();
-     }
-
+    @Bean
+    @Order(1)
+    public SecurityFilterChain apiSecurityFilterChain(HttpSecurity http, JwtAuthenticationConverter jwtConverter) throws Exception {
+        return http
+                .securityMatcher("/api/**")
+                .cors(Customizer.withDefaults())
+                .csrf(csrf -> csrf.disable())
+                .sessionManagement(session ->
+                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/rides/**").permitAll()
+                        .anyRequest().authenticated())
+                .oauth2ResourceServer(server -> server
+                        .jwt(jwt -> jwt.jwtAuthenticationConverter(jwtConverter)))
+                .build();
+    }
 
     @Bean
+    @Order(2)
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .authorizeHttpRequests((authorize) -> authorize
                         .requestMatchers("/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**").permitAll()
-                        .requestMatchers("/h2-console/**").permitAll()
-                        .requestMatchers("/", "/error", "/css/**", "/images/**").permitAll() // static resources
-                        .requestMatchers("/login", "/user/register", "/user/register").permitAll()
-
+                        .requestMatchers("/", "/error", "/style.css", "/Images/**").permitAll() // static resources
+                        .requestMatchers("/list", "/view/current/{id}", "/user/register").permitAll()
+                        .requestMatchers("/register", "/register/**", "/view/current/{id}/edit",
+                            "/view/current/{id}/delete", "/view/current/{id}/lost",
+                                "/view/current/{id}/found").hasAnyRole("ADMIN", "USER")
                         .anyRequest().authenticated())
-                .headers(headers -> headers
-                        .frameOptions(frame -> frame.sameOrigin()))
-
                 .formLogin(form -> form
                         .loginPage("/login")
-                        .defaultSuccessUrl("/")
+                        .defaultSuccessUrl("/list")
                         .permitAll())
                 .logout(logout -> logout
-                        .logoutSuccessUrl("/login")
+                        .logoutSuccessUrl("/list")
                         .permitAll())
                 .build();
     }

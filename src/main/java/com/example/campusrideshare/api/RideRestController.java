@@ -2,9 +2,11 @@ package com.example.campusrideshare.api;
 
 import com.example.campusrideshare.domain.Ride;
 import com.example.campusrideshare.services.RideService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
@@ -46,6 +48,7 @@ public class RideRestController {
     }
 
     @PostMapping(consumes = "application/json")
+    @SecurityRequirement(name = "bearerAuth")
     public ResponseEntity<RideResponseDTO> createRide(@Valid @RequestBody RideCreateRequestDTO request,
                                                       @AuthenticationPrincipal Jwt jwt) {
         Ride ride = RideRequestMapper.fromCreate(request);
@@ -62,6 +65,8 @@ public class RideRestController {
     }
 
     @DeleteMapping("/{id}")
+    @SecurityRequirement(name = "bearerAuth")
+    @PreAuthorize("hasRole('ADMIN') or @rideAuthorization.isOwner(#id, authentication.name)")
     public ResponseEntity<Void> deleteRide(@PathVariable UUID id) {
         boolean deleted = rideService.deleteRideById(id);
 

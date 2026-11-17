@@ -17,3 +17,11 @@ spring:
 logging:
   level:
     com.example.campusrideshare: DEBUG
+
+campus-ride:
+  security:
+    jwt:
+      secret: "G+wHXqSXKWB1ZAKymVfCd0Zm64n8vRAZA8BOE3EvUf8="
+      issuer: "campus-ride"
+      audience: "campus-ride-api"
+      token-duration: 8h
