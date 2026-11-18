@@ -13,6 +13,28 @@ spring:
     console:
       enabled: true
       path: /h2-console
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JacksonJsonSerializer
+    consumer:
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JacksonJsonDeserializer
+      auto-offset-reset: earliest
+      properties:
+        spring.json.trusted.packages: "com.example.campusrideshare.messaging"
+  mail:
+    host: ${MAIL_HOST:sandbox.smtp.mailtrap.io}
+    port: ${MAIL_PORT:2525}
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
+    properties:
+      "[mail.smtp.auth]": true
+      "[mail.smtp.starttls.enable]": true
+      "[mail.smtp.connectiontimeout]": 5000
+      "[mail.smtp.timeout]": 5000
+      "[mail.smtp.writetimeout]": 5000
 
 logging:
   level:
@@ -25,3 +47,11 @@ campus-ride:
       issuer: "campus-ride"
       audience: "campus-ride-api"
       token-duration: 8h
+  messaging:
+    ride-status-topic: ${KAFKA_RIDE_STATUS_TOPIC:ride-status-events}
+    logging-group: ${KAFKA_LOGGING_GROUP:campus-ride-event-logger}
+    email-group: ${KAFKA_EMAIL_GROUP:campus-ride-email-notifications}
+    partitions: ${KAFKA_TOPIC_PARTITIONS:3}
+    replicas: ${KAFKA_TOPIC_REPLICAS:1}
+  email:
+    from-address: ${MAIL_FROM:no-reply@campusrides.local}
