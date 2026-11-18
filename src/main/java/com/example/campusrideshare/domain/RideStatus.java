@@ -13,4 +13,17 @@ public enum RideStatus {
             default -> "Other";
         };
     }
+
+    public static RideStatus fromLabel(String value) {
+        if (value == null || value.isBlank()) {
+            throw new IllegalArgumentException("Status is required");
+        }
+        String v = value.trim();
+        for (RideStatus s : values()) {
+            if (s.name().equalsIgnoreCase(v) || s.toString().equalsIgnoreCase(v)) {
+                return s;
+            }
+        }
+        throw new IllegalArgumentException("Unknown ride status: " + value);
+    }
 }

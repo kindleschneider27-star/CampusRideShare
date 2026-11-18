@@ -82,8 +82,8 @@ public class RideRestController {
     @SecurityRequirement(name = "bearerAuth")
     @PreAuthorize("hasRole('ADMIN') or @rideAuthorization.isOwner(#id, authentication.name)")
     public ResponseEntity<RideResponseDTO> changeStatus(@PathVariable UUID id,
-                                                        @RequestParam RideStatus status) {
-        Ride updated = rideService.changeStatus(id, status);
+                                                        @RequestParam String status) {
+        Ride updated = rideService.changeStatus(id, RideStatus.fromLabel(status));
 
         if (updated == null) {
             return ResponseEntity.notFound().build();
