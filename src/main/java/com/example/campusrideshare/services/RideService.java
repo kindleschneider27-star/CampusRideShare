@@ -114,7 +114,7 @@ public class RideService {
 
     private void publishStatus(Ride ride, RideStatus status) {
         try {
-            producer.sendRideStatusEvent(RideStatusEvent.fromRide(ride, status));
+            producer.send(RideStatusEvent.fromRideStatus(ride, status));
         } catch (Exception ex) {
             logger.error("Failed to publish status event for ride {}: {}", ride.getId(), ex.getMessage());
         }

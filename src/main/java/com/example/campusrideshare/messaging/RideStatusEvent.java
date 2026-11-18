@@ -29,7 +29,7 @@ public class RideStatusEvent {
         RideStatusEvent event = new RideStatusEvent();
 
         event.setEventId(UUID.randomUUID());
-        event.setRideId(UUID.randomUUID());
+        event.setRideId(ride.getId());
         event.setStatus(rideStatus);
         event.setDeparture(ride.getDeparture());
         event.setDestination(ride.getDestination());
