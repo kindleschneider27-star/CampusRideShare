@@ -32,8 +32,8 @@ public class RideStatusEmailService {
         SimpleMailMessage message = new SimpleMailMessage();
 
         message.setFrom(emailProperties.getFromAddress());
-        message.setTo(emailProperties.getFromAddress());
-        message.setBcc(event.getStatus()+ "-" + event.getDeparture()+ "-" + event.getDestination());
+        message.setTo(event.getDriverEmail());
+        message.setText(event.toStatusEmail());
 
         message.setText(event.toStatusEmail());
 
