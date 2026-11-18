@@ -6,6 +6,8 @@ import com.example.campusrideshare.domain.Department;
 import com.example.campusrideshare.domain.Ride;
 import com.example.campusrideshare.domain.RideStatus;
 import com.example.campusrideshare.domain.User;
+import com.example.campusrideshare.messaging.RideStatusEvent;
+import com.example.campusrideshare.messaging.RideStatusEventProducer;
 import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,10 +24,12 @@ public class RideService {
     private static final Logger logger = LoggerFactory.getLogger(RideService.class);
     private final RideRepository rideRepo;
     private final UserRepository userRepo;
+    private final RideStatusEventProducer producer;
 
-    public RideService(RideRepository rr, UserRepository ur) {
+    public RideService(RideRepository rr, UserRepository ur, RideStatusEventProducer producer) {
         this.rideRepo = rr;
         this.userRepo = ur;
+        this.producer = producer;
     }
 
     public List<Ride> getAllRides() {
@@ -88,6 +92,32 @@ public class RideService {
         }
         ride.setDriver(driver.get());
         ride.setStatus(RideStatus.OPEN);
-        return rideRepo.save(ride);
+        Ride saved = rideRepo.save(ride);
+        publishStatus(saved, RideStatus.OPEN);
+        return saved;
     }
+
+    @Transactional
+    @PreAuthorize("hasRole('ADMIN') or @rideAuthorization.isOwner(#id, authentication.name)")
+    public Ride changeStatus(UUID id, RideStatus status) {
+        Optional<Ride> rideOpt = rideRepo.findById(id);
+        if (rideOpt.isEmpty()) {
+            return null;
+        }
+        Ride ride = rideOpt.get();
+        ride.setStatus(status);
+        Ride saved = rideRepo.save(ride);
+        publishStatus(saved, status);
+        logger.info("Ride {} status changed to {}", id, status);
+        return saved;
+    }
+
+    private void publishStatus(Ride ride, RideStatus status) {
+        try {
+            producer.sendRideStatusEvent(RideStatusEvent.fromRide(ride, status));
+        } catch (Exception ex) {
+            logger.error("Failed to publish status event for ride {}: {}", ride.getId(), ex.getMessage());
+        }
+    }
+
 }

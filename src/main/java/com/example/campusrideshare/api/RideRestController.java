@@ -1,6 +1,7 @@
 package com.example.campusrideshare.api;
 
 import com.example.campusrideshare.domain.Ride;
+import com.example.campusrideshare.domain.RideStatus;
 import com.example.campusrideshare.services.RideService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
@@ -77,6 +78,18 @@ public class RideRestController {
         return ResponseEntity.noContent().build();
     }
 
+    @PatchMapping("/{id}/status")
+    @SecurityRequirement(name = "bearerAuth")
+    @PreAuthorize("hasRole('ADMIN') or @rideAuthorization.isOwner(#id, authentication.name)")
+    public ResponseEntity<RideResponseDTO> changeStatus(@PathVariable UUID id,
+                                                        @RequestParam RideStatus status) {
+        Ride updated = rideService.changeStatus(id, status);
 
+        if (updated == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(RideResponseDTO.from(updated, true));
+    }
 
 }

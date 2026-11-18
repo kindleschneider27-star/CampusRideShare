@@ -4,7 +4,9 @@ import com.example.campusrideshare.config.MessagingProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.stereotype.Service;
 
+@Service
 public class RideStatusEventProducer {
     private static final Logger logger = LoggerFactory.getLogger(RideStatusEventProducer.class);
     private final KafkaTemplate<String, RideStatusEvent> kafkaTemplate;
