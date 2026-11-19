@@ -32,9 +32,8 @@ public class RideStatusEmailService {
         SimpleMailMessage message = new SimpleMailMessage();
 
         message.setFrom(emailProperties.getFromAddress());
+        message.setSubject("Campus Ride Status: " + event.getStatus());
         message.setTo(event.getDriverEmail());
-        message.setText(event.toStatusEmail());
-
         message.setText(event.toStatusEmail());
 
         try {
