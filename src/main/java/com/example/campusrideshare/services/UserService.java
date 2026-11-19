@@ -1,6 +1,7 @@
 package com.example.campusrideshare.services;
 
 import com.example.campusrideshare.data.UserRepository;
+import com.example.campusrideshare.domain.Department;
 import com.example.campusrideshare.domain.User;
 import com.example.campusrideshare.security.UserRegistrationForm;
 import jakarta.transaction.Transactional;
@@ -10,6 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class UserService {
@@ -55,17 +57,20 @@ public class UserService {
     }
 
     @Transactional
-    public Optional<User> updateUser(User user) {
-        Optional<User> newUser = userRepo.findByUsername(user.getUsername());
-        if (newUser.isPresent()) {
-            newUser.get().setFullName(user.getFullName());
-            newUser.get().setEmail(user.getEmail());
-            newUser.get().setDepartment(user.getDepartment());
-            newUser.get().setPassword(passwordEncoder.encode(user.getPassword()));
-            userRepo.save(newUser.get());
-
+    public Optional<User> updateUser(UUID id, String fullName, String email,
+                                     Department department, String newPassword) {
+        Optional<User> existing = userRepo.findById(id);
+        if (existing.isEmpty()) {
+            return Optional.empty();
         }
-        else {}
-        return newUser;
+        User user = existing.get();
+        user.setFullName(fullName);
+        user.setEmail(email);
+        user.setDepartment(department);
+        if (newPassword != null && !newPassword.isBlank()) {
+            user.setPassword(passwordEncoder.encode(newPassword));
+        }
+        // role and username deliberately left alone
+        return Optional.of(userRepo.save(user));
     }
 }
