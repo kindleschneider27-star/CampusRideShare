@@ -35,7 +35,6 @@ public class SecurityConfig {
     public JwtAuthenticationConverter jwtAuthenticationConverter() {
         JwtGrantedAuthoritiesConverter authoritiesConverter = new JwtGrantedAuthoritiesConverter();
         authoritiesConverter.setAuthoritiesClaimName("roles");
-        // The JWT already stores ROLE_USER or ROLE_ADMIN
         authoritiesConverter.setAuthorityPrefix("");
         JwtAuthenticationConverter authenticationConverter = new JwtAuthenticationConverter();
         authenticationConverter.setJwtGrantedAuthoritiesConverter(authoritiesConverter);
@@ -67,11 +66,11 @@ public class SecurityConfig {
         return http
                 .authorizeHttpRequests((authorize) -> authorize
                         .requestMatchers("/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**").permitAll()
-                        .requestMatchers("/", "/error", "/css/**", "/js/**", "/images/**").permitAll() // static resources
+                        .requestMatchers("/", "/error", "/static/images/css/**", "/js/**", "/images/**").permitAll() // static resources
                         .requestMatchers("/list", "/view/current/{id}", "/user/register").permitAll()
                         .requestMatchers("/register", "/register/**", "/view/current/{id}/edit",
                             "/view/current/{id}/delete", "/view/current/{id}/lost",
-                                "/view/current/{id}/found").hasAnyRole("ADMIN", "USER")
+                                "/view/current/{id}/found").hasAnyRole("ADMIN", "STUDENT")
                         .anyRequest().authenticated())
                 .formLogin(form -> form
                         .loginPage("/login")

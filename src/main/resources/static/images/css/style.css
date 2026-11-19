@@ -1,21 +1,29 @@
 header {
-    background-repeat: no-repeat;
-    background-size: 100% auto;
-    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 18px;
+    background-color: #fff;
+    padding: 8px 20px;
 }
+
+.headerLogo {
+    height: 120px;
+    width: auto;
+    mix-blend-mode: multiply;
+}
+
+
 header h1 {
     margin-top: 0;
     margin-bottom: 0;
     font-size: 3.5em;
     line-height: 350%;
     margin-left: 2em;
-    color: purple;
+    color: blue;
     text-shadow: 5px 5px 5px darkgray;
 }
-body {
-    background-color: lightgray;
-    font-family: Arial, Verdana, sans-serif;
-}
+
 main {
     background-color: white;
     overflow: hidden;
@@ -23,7 +31,7 @@ main {
 }
 nav {
     text-align: center;
-    background-color: #90CD4F;
+    background-color: lightblue;
     padding: 10px;
     margin-top: 10px;
     margin-bottom: 10px;
@@ -57,20 +65,18 @@ nav form input[type="submit"]:hover{
     color: black;
 }
 nav form input[type="submit"]:visited {
-    color: purple;
+    color: blue;
 }
 
-
 #pageCenter {
-    width: 80%;
-    margin-right: auto;
-    margin-left: auto;
-    min-width: 960px;
+    width: 100%;
+    min-width: 0;
+    margin: 0;
 }
 
 footer {
     margin-top: 10px;
-    background-image: linear-gradient(#90CD4F, #3A5B24);
+    background-image: linear-gradient(lightblue);
     color: white;
     text-align: right;
     font-weight: bold;
@@ -108,12 +114,7 @@ section a:visited {
     color: black;
 }
 
-.listPetImage {
-    float: left;
-    margin-right: 20px;
-    margin-top: auto;
-    margin-bottom: auto;
-}
+
 
 input, select {
     margin-bottom: 5px;
@@ -132,7 +133,7 @@ aside img {
     font-style: italic;
 }
 
-.welcome {
+.Welcome {
     background-color: white;
     padding: 20px;
 }

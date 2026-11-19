@@ -6,13 +6,16 @@
 <head th:fragment="head">
     <meta charset="UTF-8">
     <title th:text="'Campus Rides :: ' + ${pageTitle ?: 'Home'}"></title>
-    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/images/css/style.css}">
 </head>
 
 
 <body>
 <div th:fragment="header-nav">
-    <header><h1>Campus Rides</h1></header>
+    <header>
+        <h1>Campus Rides</h1>
+        <img class="headerLogo" th:src="@{/images/metro-logo.jpg}" alt="Metropolitan Community College">
+    </header>
     <nav>
         <a th:href="@{/}">Home</a>
         <a sec:authorize="isAuthenticated()" th:href="@{/rides/list}">All Rides </a>

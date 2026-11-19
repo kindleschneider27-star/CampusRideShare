@@ -3,6 +3,8 @@ package com.example.campusrideshare.web;
 
 import com.example.campusrideshare.domain.Department;
 import com.example.campusrideshare.domain.Ride;
+import com.example.campusrideshare.domain.RideStatus;
+import com.example.campusrideshare.domain.User;
 import com.example.campusrideshare.services.RideService;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
@@ -118,6 +120,26 @@ public class RideViewController {
             redirectAttributes.addFlashAttribute("errorMessage", ex.getMessage());
         }
         return "redirect:/rides/view/" + id;
+    }
+
+    private boolean canJoin(Ride ride, Authentication auth) {
+        for (User passenger : ride.getPassengers()) {
+            if (passenger.getUsername().equals(auth.getName())) {
+                return false;
+            }
+        }
+        if (auth == null ) {
+            return false;
+        }
+        boolean isDriver = auth.getName().equals(ride.getDriver().getUsername());
+        if (isDriver) {
+            return false;
+        }
+        boolean isOpen = ride.getStatus() == RideStatus.OPEN;
+        if (!isOpen) {
+            return false;
+        }
+        return true;
     }
 
 }
