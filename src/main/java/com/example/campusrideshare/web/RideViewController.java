@@ -48,7 +48,7 @@ public class RideViewController {
                 || auth.getAuthorities().stream()
                 .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN")));
         model.addAttribute("canDelete", canModify);
-
+        model.addAttribute("canJoin", canJoin(current, auth));
         model.addAttribute("current", current);
         model.addAttribute("Ride to", current.getDestination());
         return "viewRide";
@@ -123,14 +123,16 @@ public class RideViewController {
     }
 
     private boolean canJoin(Ride ride, Authentication auth) {
+        if (auth == null ) {
+            return false;
+        }
+
         for (User passenger : ride.getPassengers()) {
             if (passenger.getUsername().equals(auth.getName())) {
                 return false;
             }
         }
-        if (auth == null ) {
-            return false;
-        }
+
         boolean isDriver = auth.getName().equals(ride.getDriver().getUsername());
         if (isDriver) {
             return false;

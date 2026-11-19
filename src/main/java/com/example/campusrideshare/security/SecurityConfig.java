@@ -66,12 +66,15 @@ public class SecurityConfig {
         return http
                 .authorizeHttpRequests((authorize) -> authorize
                         .requestMatchers("/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**").permitAll()
+                        .requestMatchers("/h2-console/**").permitAll()
                         .requestMatchers("/", "/error", "/static/images/css/**", "/js/**", "/images/**").permitAll() // static resources
                         .requestMatchers("/list", "/view/current/{id}", "/user/register").permitAll()
                         .requestMatchers("/register", "/register/**", "/view/current/{id}/edit",
                             "/view/current/{id}/delete", "/view/current/{id}/lost",
                                 "/view/current/{id}/found").hasAnyRole("ADMIN", "STUDENT")
                         .anyRequest().authenticated())
+                .headers(headers -> headers.
+                        frameOptions(frame -> frame.sameOrigin()))
                 .formLogin(form -> form
                         .loginPage("/login")
                         .defaultSuccessUrl("/rides/list", true)

@@ -9,6 +9,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class UserService {
     private static final Logger logger = LoggerFactory.getLogger(UserService.class);
@@ -50,5 +52,20 @@ public class UserService {
         userRepo.save(newUser);
 
         return true; // success!!
+    }
+
+    @Transactional
+    public Optional<User> updateUser(User user) {
+        Optional<User> newUser = userRepo.findByUsername(user.getUsername());
+        if (newUser.isPresent()) {
+            newUser.get().setFullName(user.getFullName());
+            newUser.get().setEmail(user.getEmail());
+            newUser.get().setDepartment(user.getDepartment());
+            newUser.get().setPassword(passwordEncoder.encode(user.getPassword()));
+            userRepo.save(newUser.get());
+
+        }
+        else {}
+        return newUser;
     }
 }

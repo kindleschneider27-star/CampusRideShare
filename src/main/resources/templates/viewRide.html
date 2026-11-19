@@ -13,6 +13,7 @@
     <div class="successMessage" role="status" th:if="${successMessage}" th:text="${successMessage}">
         Success Message
     </div>
+    <section>
     <h2 th:text="${current.driver.fullName}">DRIVER</h2>
     <p>Rider Limit: <span th:text="${current.riderLimit}">RIDER_LIMIT</span></p>
     <p>Current Passengers: <span th:text="${#lists.size(current.passengers)}">PASSENGERS</span></p>
@@ -34,7 +35,7 @@
         <button type="submit">Join Ride</button>
 
     </form>
-
+    </section>
     <a th:href="@{/rides/list}">Back to Rides</a>
 
 </main>
