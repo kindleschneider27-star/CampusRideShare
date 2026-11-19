@@ -12,9 +12,9 @@ public class UserCreateRequestDTO {
     @NotBlank(message="A name is required")
     private String fullName;
     @NotBlank(message="An email is required")
-    private String Email;
+    private String email;
     @NotBlank(message="A department is required")
-    private String Department;
+    private String department;
 
     public UserCreateRequestDTO() {
     }
@@ -52,18 +52,18 @@ public class UserCreateRequestDTO {
     }
 
     public String getEmail() {
-        return Email;
+        return email;
     }
 
     public void setEmail(String email) {
-        Email = email;
+        this.email = email;
     }
 
     public String getDepartment() {
-        return Department;
+        return department;
     }
 
     public void setDepartment(String department) {
-        Department = department;
+        this.department = department;
     }
 }
