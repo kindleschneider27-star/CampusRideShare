@@ -106,13 +106,16 @@ public class RideViewController {
     }
 
     @PostMapping("/{id}/join")
-    public String joinRide(@PathVariable UUID id, @Valid Ride ride,Authentication auth, RedirectAttributes redirectAttributes) {
-        if(rideService.updateRide(id, ride)) {
-            redirectAttributes.addFlashAttribute("successMessage", "ride updated successfully");
+    public String joinRide(@PathVariable UUID id, Authentication auth, RedirectAttributes redirectAttributes) {
+        if (auth == null) {
+            redirectAttributes.addFlashAttribute("errorMessage", "You must be logged in to join a ride.");
+            return "redirect:/rides/view/" + id;
         }
-
-        else {
-            redirectAttributes.addFlashAttribute("errorMessage", "ride not updated");
+        try {
+            rideService.joinRide(id, auth.getName());
+            redirectAttributes.addFlashAttribute("successMessage", "You joined this ride.");
+        } catch (IllegalArgumentException | IllegalStateException ex) {
+            redirectAttributes.addFlashAttribute("errorMessage", ex.getMessage());
         }
         return "redirect:/rides/view/" + id;
     }

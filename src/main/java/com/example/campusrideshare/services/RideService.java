@@ -121,39 +121,35 @@ public class RideService {
     }
 
     @Transactional
-    public Ride joinRide(UUID rideId, String username) throws IllegalStateException {
-        Optional<Ride> rideJoin = rideRepo.findById(rideId);
-        if (rideJoin.isEmpty()) {
-            logger.error("Error joining ride with ID {}", rideId);
-            return null;
-        }
-        Ride ride = rideJoin.get();
+    public Ride joinRide(UUID rideId, String username) {
+        Ride ride = rideRepo.findById(rideId)
+                .orElseThrow(() -> new IllegalArgumentException("Ride not found"));
+        User passenger = userRepo.findByUsername(username)
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+
         if (ride.getStatus() != RideStatus.OPEN) {
-            logger.error("Ride with ID {} is not open", rideId);
-            return null;
+            throw new IllegalStateException("This ride is " + ride.getStatus() + " and is not taking passengers.");
         }
         if (ride.getDriver().getUsername().equals(username)) {
-            logger.error("Ride with ID {} is already joined", rideId);
-            return null;
+            throw new IllegalStateException("You are the driver of this ride.");
         }
-        if(ride.getPassengers().contains(username)) {
-            logger.error("Ride with ID {} is already joined", rideId);
-            return null;
+        if (ride.getPassengers().contains(passenger)) {
+            throw new IllegalStateException("You have already joined this ride.");
         }
-        if(ride.getPassengers().size() == rideJoin.get().getRiderLimit()){
-            logger.error("Ride with ID {} is at capacity", rideId);
-            return null;
+        if (ride.getPassengers().size() >= ride.getRiderLimit()) {
+            throw new IllegalStateException("This ride is already full.");
         }
-        ride.getPassengers().add(ride.getUserusername);
 
-        if(rideJoin.get().getPassengers().size() == rideJoin.get().getRiderLimit()){
-            logger.error("Ride with ID {} is now at capacity", rideId);
+        ride.getPassengers().add(passenger);
+        if (ride.getPassengers().size() >= ride.getRiderLimit()) {
             ride.setStatus(RideStatus.FULL);
         }
-        publishStatus(ride, ride.getStatus());
 
-        return rideJoin.get();
-
+        Ride saved = rideRepo.save(ride);
+        logger.info("Passenger {} joined ride {} ({}/{} seats)", username, rideId,
+                saved.getPassengers().size(), saved.getRiderLimit());
+        publishStatus(saved, saved.getStatus());
+        return saved;
     }
 
 }
