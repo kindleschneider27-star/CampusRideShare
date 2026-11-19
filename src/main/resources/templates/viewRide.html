@@ -30,6 +30,9 @@
     <a th:if="${canDelete}" th:href="@{/rides/view/{id}/edit(id=${current.id})}">
         <button type="button">Edit Ride</button> <br>
     </a>
+    <form th:if="${canJoin}" method="post" th:action="@{/rides/view/{id}/join(id=${current.id})}">
+        <button type="submit">Join Ride</button>
+    </form>
     <a th:href="@{/rides/list}">Back to Rides</a>
 
 </main>

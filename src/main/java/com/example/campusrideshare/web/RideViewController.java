@@ -105,4 +105,16 @@ public class RideViewController {
         return "redirect:/rides/view/" + id;
     }
 
+    @PostMapping("/{id}/join")
+    public String joinRide(@PathVariable UUID id, @Valid Ride ride,Authentication auth, RedirectAttributes redirectAttributes) {
+        if(rideService.updateRide(id, ride)) {
+            redirectAttributes.addFlashAttribute("successMessage", "ride updated successfully");
+        }
+
+        else {
+            redirectAttributes.addFlashAttribute("errorMessage", "ride not updated");
+        }
+        return "redirect:/rides/view/" + id;
+    }
+
 }

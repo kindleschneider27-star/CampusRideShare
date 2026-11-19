@@ -120,4 +120,40 @@ public class RideService {
         }
     }
 
+    @Transactional
+    public Ride joinRide(UUID rideId, String username) throws IllegalStateException {
+        Optional<Ride> rideJoin = rideRepo.findById(rideId);
+        if (rideJoin.isEmpty()) {
+            logger.error("Error joining ride with ID {}", rideId);
+            return null;
+        }
+        Ride ride = rideJoin.get();
+        if (ride.getStatus() != RideStatus.OPEN) {
+            logger.error("Ride with ID {} is not open", rideId);
+            return null;
+        }
+        if (ride.getDriver().getUsername().equals(username)) {
+            logger.error("Ride with ID {} is already joined", rideId);
+            return null;
+        }
+        if(ride.getPassengers().contains(username)) {
+            logger.error("Ride with ID {} is already joined", rideId);
+            return null;
+        }
+        if(ride.getPassengers().size() == rideJoin.get().getRiderLimit()){
+            logger.error("Ride with ID {} is at capacity", rideId);
+            return null;
+        }
+        ride.getPassengers().add(ride.getUserusername);
+
+        if(rideJoin.get().getPassengers().size() == rideJoin.get().getRiderLimit()){
+            logger.error("Ride with ID {} is now at capacity", rideId);
+            ride.setStatus(RideStatus.FULL);
+        }
+        publishStatus(ride, ride.getStatus());
+
+        return rideJoin.get();
+
+    }
+
 }
