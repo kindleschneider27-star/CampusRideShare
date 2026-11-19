@@ -54,4 +54,4 @@ campus-ride:
     partitions: ${KAFKA_TOPIC_PARTITIONS:3}
     replicas: ${KAFKA_TOPIC_REPLICAS:1}
   email:
-    from-address: ${MAIL_FROM:no-reply@campusrides.local}
+    from-address: "${MAIL_FROM:no-reply@campusrides.local}"
